@@ -7,13 +7,11 @@ data = []
 last_item = None
 for item in raw_data:
     try:
-        if item != last_item:
+        if item != last_item or 1==1:
             data.append(int(item))
             last_item = item
     except ValueError:
         continue
-
-y = list(range(len(data)))
 
 def get_array_sizes(size) -> list[float]:
     """Returns .5mb chunks"""
@@ -22,14 +20,6 @@ def get_array_sizes(size) -> list[float]:
         data.extend([i, i+0.5])
     data.append(size)
     return data
-
-
-# plt.xlabel("Array index")
-# plt.ylabel("Index lookup time in nanoseconds")
-# plt.xticks(get_array_sizes(len(data)))
-# plt.show()
-# plt.savefig('plots/initial_laptop_1.png')
-
 
 fig, ax = plt.subplots()
 
@@ -42,13 +32,28 @@ mb = 4
 n = mb * 2 + 1
 step = (len(data) - 0) // (n - 1)
 x = list(range(0, len(data), step))
-# x.insert(0, 0)
 ticks = get_array_sizes(mb)
+
+# Set y axis right
+y_max = len(data)
+n = 10
+y_step = (y_max - 0) // (n - 1)
+y_label = list(range(0, y_max, y_step))
+
+tick_step = (max(data) - 0) // (n - 1)
+y_ticks = []
+for i in range(0, max(data), tick_step):
+    y_ticks.append(i)
+
+print(len(y_ticks), len(ticks))
 
 ax.set_xticks(x)
 ax.set_xticklabels(ticks)
 
-ax.plot(y, data)
+ax.set_yticks(y_label)
+ax.set_yticklabels(y_ticks)
+
+ax.plot(list(range(len(data))), data)
 # plt.plot(y, data)
 plt.show()
 # plt.savefig('plots/initial_laptop_2.png')

@@ -8,6 +8,7 @@ public class ListTime {
         // 4 bytes per int
         // 256 is 1kb for ints
         ListTime listTime = new ListTime();
+        System.out.println(listTime.getArraySizeFor(5));
         listTime.runLoop(listTime.getArraySizeFor(5));
     }
 
@@ -26,7 +27,7 @@ public class ListTime {
             timings.add(runtime);
         }
         System.out.println("Minimum Element in ArrayList = " + Collections.min(timings));
-        System.out.println("Minimum Element in ArrayList = " + Collections.max(timings));
+        System.out.println("Maximum Element in ArrayList = " + Collections.max(timings));
 
         try {
             FileWriter myWriter = new FileWriter("data.txt");

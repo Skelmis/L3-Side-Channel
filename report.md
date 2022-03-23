@@ -41,6 +41,13 @@ int size = getArraySizeFor(1);
 int[] arr = new int[size];
 ```
 
+#### Looping tidbits
+
+We loop with a step of `16` to hit a new cache line for
+every iteration of my machine, you can find this out with
+the command `getconf -a | grep CACHE` and looking at the 
+relevant output.
+
 #### Cache cleaning between loops
 
 In order to ensure a reproducible environment we need
@@ -48,7 +55,6 @@ to remove the previous runs data from the l3 cache
 to not already have data 'pre-loaded' or interfering
 with our next loop.
 
-![Initial](plots/initial_laptop_1.png)
 
 #### Initial approach
 
@@ -56,3 +62,10 @@ The initial approach consisted of timing each array lookup
 within the loop, an approach with produced far too many data
 points for reliable graphing and computation.
 
+This utilises a `System.gc()` call before we begin the loop,
+however, there are otherwise no optimisations or changes to
+things like the JIT. I believe this leads to some issues with
+regardless to how reliable the data is due to Java possibly
+compiling out some of our lookups if it determines its a no-op
+
+![Initial](plots/initial_laptop_1.png)

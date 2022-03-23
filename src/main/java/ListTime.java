@@ -8,14 +8,18 @@ public class ListTime {
         // 4 bytes per int
         // 256 is 1kb for ints
         ListTime listTime = new ListTime();
-        listTime.runLoop(listTime.getArraySizeFor(17));
+        listTime.runLoop(listTime.getArraySizeFor(5));
     }
 
-    public void runLoop(int size){I
+    public void runLoop(int size){
         int[] arr = new int[size];
         ArrayList<Long> timings = new ArrayList<Long>();
 
-        for (int i = 0; i < size; i++) {
+        // Try clean cache??
+        System.gc();
+
+        // Every 16 is a new cache line
+        for (int i = 0; i < size; i += 16) {
             long start = System.nanoTime();
             int x = arr[i] + 1;
             long runtime = System.nanoTime() - start;

@@ -75,4 +75,6 @@ based on the time the entire loop takes rather than time
 per individual lookup. This will allow for a more generalised
 graph which shows the effects at each size.
 
+# TODO discuss cache lines and prefetching
+
 [Docs](https://igoro.com/archive/gallery-of-processor-cache-effects/)

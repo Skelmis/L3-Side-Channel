@@ -66,6 +66,12 @@ is enough of a reproducible environment to continue.
 
 ![Initial](plots/initial_laptop_1.png)
 
+As we can see in the image however, this approach also
+fails to provide the relevant results. We expect it to
+increase based on size, however, it does not do so in 
+the fashion we expect it to. This is also likely due to
+the fact that this initial approach did not take into
+account factors such as the cache line or pre-fetching.
 
 #### Final approach
 

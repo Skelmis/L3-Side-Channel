@@ -3,34 +3,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ListTime {
+public class LoopTime {
     public static void main(String[] args){
         // 4 bytes per int
         // 256 is 1kb for ints
-        ListTime listTime = new ListTime();
-        System.out.println(listTime.getArraySizeFor(5));
-        listTime.runLoop(listTime.getArraySizeFor(5));
-    }
-
-    public void runLoop(int size){
-        int[] arr = new int[size];
+        LoopTime listTime = new LoopTime();
         ArrayList<Long> timings = new ArrayList<Long>();
 
-        // Try clean cache??
-        System.gc();
 
-        // Every 16 is a new cache line
-        for (int i = 0; i < size; i += 16) {
-            long start = System.nanoTime();
-            int x = arr[i] + 1;
-            long runtime = System.nanoTime() - start;
-            timings.add(runtime);
+        double base = 0.5;
+        double val = 0;
+        for (int i = 1; i < 17; i++) {
+            int arrSize = listTime.getArraySizeFor(base * i + val);
+            System.out.println(base * i + val);
+            timings.add(listTime.runLoop(arrSize));
         }
-        System.out.println("Minimum Element in ArrayList = " + Collections.min(timings));
-        System.out.println("Maximum Element in ArrayList = " + Collections.max(timings));
 
         try {
-            FileWriter myWriter = new FileWriter("index_access.txt");
+            FileWriter myWriter = new FileWriter("loop_lookups.txt");
             for (long runtime : timings) {
                 myWriter.write(Long.toString(runtime));
                 myWriter.write("\n");
@@ -41,7 +31,20 @@ public class ListTime {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
+    }
 
+    public long runLoop(int size){
+        int[] arr = new int[size];
+
+        // Try clean cache??
+        System.gc();
+
+        // Every 16 is a new cache line
+        long start = System.nanoTime();
+        for (int i = 0; i < size; i += 1) {
+            arr[(i * 16) % (size-1)]++;
+        }
+        return System.nanoTime() - start;
     }
 
     /**
@@ -49,9 +52,9 @@ public class ListTime {
      * @param requestedSize How big in mb we want the array to be
      * @return int The required array size
      */
-    public int getArraySizeFor(int requestedSize) {
+    public int getArraySizeFor(double requestedSize) {
         // Total items required for 1 mb
         int intByteToMb = 1000000 / 4;
-        return intByteToMb * requestedSize;
+        return (int) (intByteToMb * requestedSize);
     }
 }

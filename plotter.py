@@ -1,6 +1,6 @@
 from matplotlib import pyplot as plt
 
-with open("data.txt", "r") as f:
+with open("loop_lookups.txt", "r") as f:
     raw_data = f.read().split("\n")
 
 data = []
@@ -27,13 +27,14 @@ fig, ax = plt.subplots()
 
 ax.set_title("Size vs access time")
 ax.set_ylabel("Index lookup time in nanoseconds")
-ax.set_xlabel("Index into array relative to current MB")
+ax.set_xlabel("Array size in MB")
 
 # Underlying values
-mb = 4
+mb = 8
 n = mb * 2 + 1
 step = (len(data) - 0) // (n - 1)
 x = list(range(0, len(data), step))
+x.append(15)
 ticks = get_array_sizes(mb)
 
 # Set y axis right based off max size
@@ -53,4 +54,4 @@ ax.set_yticklabels(y_ticks)
 ax.plot(list(range(len(data))), data)
 # plt.plot(y, data)
 # plt.show()
-plt.savefig("initial_laptop_1.png")
+plt.savefig("final_loop.png")

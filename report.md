@@ -48,13 +48,6 @@ every iteration of my machine, you can find this out with
 the command `getconf -a | grep CACHE` and looking at the 
 relevant output.
 
-#### Cache cleaning between loops
-
-In order to ensure a reproducible environment we need
-to remove the previous runs data from the l3 cache 
-to not already have data 'pre-loaded' or interfering
-with our next loop.
-
 
 #### Initial approach
 
@@ -66,6 +59,28 @@ This utilises a `System.gc()` call before we begin the loop,
 however, there are otherwise no optimisations or changes to
 things like the JIT. I believe this leads to some issues with
 regardless to how reliable the data is due to Java possibly
-compiling out some of our lookups if it determines its a no-op
+compiling out some of our lookups if it determines it's a no-op,
+however, given this is true for every test setup I feel it
+is enough of a reproducible environment to continue.
+
 
 ![Initial](plots/initial_laptop_1.png)
+
+As we can see in the image however, this approach also
+fails to provide the relevant results. We expect it to
+increase based on size, however, it does not do so in 
+the fashion we expect it to. This is also likely due to
+the fact that this initial approach did not take into
+account factors such as the cache line or pre-fetching.
+
+#### Final approach
+
+Given the requirements for graphing and ingesting data from
+the initial approach I feel it is better to simply test
+based on the time the entire loop takes rather than time
+per individual lookup. This will allow for a more generalised
+graph which shows the effects at each size.
+
+# TODO discuss cache lines and prefetching
+
+[Docs](https://igoro.com/archive/gallery-of-processor-cache-effects/)

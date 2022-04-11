@@ -19,7 +19,6 @@ public class ListTime {
         // Try clean cache??
         System.gc();
 
-        // Every 16 is a new cache line
         for (int i = 0; i < size; i += 16) {
             long start = System.nanoTime();
             int x = arr[i] + 1;
@@ -45,6 +44,8 @@ public class ListTime {
     }
 
     /**
+     * Calculate the required size for an array of int's
+     * in order to take up requestedSize worth of memory.
      *
      * @param requestedSize How big in mb we want the array to be
      * @return int The required array size

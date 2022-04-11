@@ -4,7 +4,7 @@
 
 ---
 
-#### Size based approaches
+### Size based approaches
 
 When attempting to timing based side channels, we need
 some form of reliable size to base our data off. For my
@@ -41,7 +41,7 @@ int size = getArraySizeFor(1);
 int[] arr = new int[size];
 ```
 
-#### Looping tidbits
+### Looping tidbits
 
 We loop with a step of `16` to hit a new cache line for
 every iteration of my machine, you can find this out with
@@ -49,7 +49,7 @@ the command `getconf -a | grep CACHE` and looking at the
 relevant output.
 
 
-#### Initial approach
+### Initial approach
 
 The initial approach consisted of timing each array lookup 
 within the loop, an approach with produced far too many data
@@ -73,14 +73,16 @@ the fashion we expect it to. This is also likely due to
 the fact that this initial approach did not take into
 account factors such as the cache line or pre-fetching.
 
-#### Final approach
+See word document for full report.
 
-Given the requirements for graphing and ingesting data from
-the initial approach I feel it is better to simply test
-based on the time the entire loop takes rather than time
-per individual lookup. This will allow for a more generalised
-graph which shows the effects at each size.
+### Final approach
 
-# TODO discuss cache lines and prefetching
+See word document.
 
-[Docs](https://igoro.com/archive/gallery-of-processor-cache-effects/)
+### Data plotting
+
+Data is plotted using the `plotter.py` file, its is quite
+finicky with axis and I would not recommend attempting to re-create
+plots. Rather, put the data from the txt file into excel.
+
+[Docs for example](https://igoro.com/archive/gallery-of-processor-cache-effects/)
